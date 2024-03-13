@@ -1,0 +1,615 @@
+Program.Sub.ScreenSU.Start
+Gui.FormEmailTemplateMaintenance..Create
+Gui.FormEmailTemplateMaintenance..Caption("Email Template Maintenance")
+Gui.FormEmailTemplateMaintenance..Size(15360,9690)
+Gui.FormEmailTemplateMaintenance..MinX(0)
+Gui.FormEmailTemplateMaintenance..MinY(0)
+Gui.FormEmailTemplateMaintenance..Position(0,0)
+Gui.FormEmailTemplateMaintenance..BackColor(-2147483633)
+Gui.FormEmailTemplateMaintenance..MousePointer(0)
+Gui.FormEmailTemplateMaintenance..Event(UnLoad,FormEmailTemplateMaintenance_UnLoad)
+Gui.FormEmailTemplateMaintenance.ButtonNew.Create(Button)
+Gui.FormEmailTemplateMaintenance.ButtonNew.Size(1020,375)
+Gui.FormEmailTemplateMaintenance.ButtonNew.Position(165,30)
+Gui.FormEmailTemplateMaintenance.ButtonNew.Caption("New")
+Gui.FormEmailTemplateMaintenance.ButtonNew.Event(Click,ButtonNew_Click)
+Gui.FormEmailTemplateMaintenance.ButtonModify.Create(Button)
+Gui.FormEmailTemplateMaintenance.ButtonModify.Size(1020,375)
+Gui.FormEmailTemplateMaintenance.ButtonModify.Position(1320,30)
+Gui.FormEmailTemplateMaintenance.ButtonModify.Caption("Modify")
+Gui.FormEmailTemplateMaintenance.ButtonModify.Event(Click,ButtonModify_Click)
+Gui.FormEmailTemplateMaintenance.ButtonDelete.Create(Button)
+Gui.FormEmailTemplateMaintenance.ButtonDelete.Size(1020,375)
+Gui.FormEmailTemplateMaintenance.ButtonDelete.Position(14040,30)
+Gui.FormEmailTemplateMaintenance.ButtonDelete.Anchor(9)
+Gui.FormEmailTemplateMaintenance.ButtonDelete.Caption("Delete")
+Gui.FormEmailTemplateMaintenance.ButtonDelete.Event(Click,ButtonDelete_Click)
+Gui.FormEmailTemplateMaintenance.EmailTemplateGrid.Create(GsGridControl)
+Gui.FormEmailTemplateMaintenance.EmailTemplateGrid.Size(15360,8415)
+Gui.FormEmailTemplateMaintenance.EmailTemplateGrid.Position(0,450)
+Gui.FormEmailTemplateMaintenance.EmailTemplateGrid.Anchor(15)
+Gui.FormEmailTemplateMaintenance.EmailTemplateGrid.Event(RowClick,EmailTemplateGrid_RowClick)
+Gui.FormEmailTemplateMaintenance.ButtonDefaultEmails.Create(Button)
+Gui.FormEmailTemplateMaintenance.ButtonDefaultEmails.Size(1320,375)
+Gui.FormEmailTemplateMaintenance.ButtonDefaultEmails.Position(13740,8925)
+Gui.FormEmailTemplateMaintenance.ButtonDefaultEmails.Anchor(10)
+Gui.FormEmailTemplateMaintenance.ButtonDefaultEmails.Caption("Default Emails")
+Gui.FormEmailTemplateMaintenance.ButtonDefaultEmails.Event(Click,ButtonDefaultEmails_Click)
+Gui.FormEmailTemplate..Create
+Gui.FormEmailTemplate..Caption("Email Template")
+Gui.FormEmailTemplate..Size(10560,6810)
+Gui.FormEmailTemplate..MinX(0)
+Gui.FormEmailTemplate..MinY(0)
+Gui.FormEmailTemplate..Position(0,0)
+Gui.FormEmailTemplate..BackColor(-2147483633)
+Gui.FormEmailTemplate..MousePointer(0)
+Gui.FormEmailTemplate..Event(UnLoad,FormEmailTemplate_UnLoad)
+Gui.FormEmailTemplate..AlwaysOnTop(True)
+Gui.FormEmailTemplate.LabelSubject.Create(Label,"Subject: ",True,690,210,0,60,135,True,0,"Arial",8,-2147483633,0)
+Gui.FormEmailTemplate.TextSubject.Create(TextBox,"",True,10200,300,0,105,315,True,0,"Arial",8,-2147483643,1)
+Gui.FormEmailTemplate.TextSubject.Anchor(15)
+Gui.FormEmailTemplate.TextSubject.MaxLength(200)
+Gui.FormEmailTemplate.LabelBody.Create(Label,"Body: ",True,645,255,0,60,720,True,0,"Arial",8,-2147483633,0)
+Gui.FormEmailTemplate.TextBody.Create(TextboxM)
+Gui.FormEmailTemplate.TextBody.Size(10200,4815)
+Gui.FormEmailTemplate.TextBody.Position(105,915)
+Gui.FormEmailTemplate.TextBody.MaxLength(1000)
+Gui.FormEmailTemplate.TextBody.Anchor(15)
+Gui.FormEmailTemplate.DropDownWildcards.Create(DropDownList)
+Gui.FormEmailTemplate.DropDownWildcards.Size(1905,330)
+Gui.FormEmailTemplate.DropDownWildcards.Position(105,6045)
+Gui.FormEmailTemplate.DropDownWildcards.Anchor(6)
+Gui.FormEmailTemplate.DropDownWildcards.DefaultValue("")
+Gui.FormEmailTemplate.LabelInsertValue.Create(Label,"Insert Value: ",True,1935,255,0,105,5835,True,0,"Arial",8,-2147483633,0)
+Gui.FormEmailTemplate.LabelInsertValue.Anchor(6)
+Gui.FormEmailTemplate.ButtonCopyToClipboard.Create(Button)
+Gui.FormEmailTemplate.ButtonCopyToClipboard.Size(1680,375)
+Gui.FormEmailTemplate.ButtonCopyToClipboard.Position(2160,6030)
+Gui.FormEmailTemplate.ButtonCopyToClipboard.Anchor(6)
+Gui.FormEmailTemplate.ButtonCopyToClipboard.Caption("Copy To Clipboard")
+Gui.FormEmailTemplate.ButtonCopyToClipboard.Event(Click,ButtonCopyToClipboard_Click)
+Gui.FormEmailTemplate.ButtonSave.Create(Button)
+Gui.FormEmailTemplate.ButtonSave.Size(960,375)
+Gui.FormEmailTemplate.ButtonSave.Position(9345,6030)
+Gui.FormEmailTemplate.ButtonSave.Anchor(10)
+Gui.FormEmailTemplate.ButtonSave.Caption("Save")
+Gui.FormEmailTemplate.ButtonSave.Event(Click,ButtonSave_Click)
+Gui.FormDefaultEmails..Create
+Gui.FormDefaultEmails..Caption("Default Emails")
+Gui.FormDefaultEmails..Size(6345,5430)
+Gui.FormDefaultEmails..MinX(0)
+Gui.FormDefaultEmails..MinY(0)
+Gui.FormDefaultEmails..Position(0,0)
+Gui.FormDefaultEmails..BackColor(-2147483633)
+Gui.FormDefaultEmails..MousePointer(0)
+Gui.FormDefaultEmails..Event(UnLoad,FormDefaultEmails_UnLoad)
+Gui.FormDefaultEmails.EmailGrid.Create(GsGridControl)
+Gui.FormDefaultEmails.EmailGrid.Size(6360,4245)
+Gui.FormDefaultEmails.EmailGrid.Position(0,435)
+Gui.FormDefaultEmails.EmailGrid.Event(RowClick,EmailGrid_RowClick)
+Gui.FormDefaultEmails.EmailGrid.Anchor(15)
+Gui.FormDefaultEmails.ButtonAddEmail.Create(Button)
+Gui.FormDefaultEmails.ButtonAddEmail.Size(1020,375)
+Gui.FormDefaultEmails.ButtonAddEmail.Position(4050,45)
+Gui.FormDefaultEmails.ButtonAddEmail.Caption("Add")
+Gui.FormDefaultEmails.ButtonAddEmail.Event(Click,ButtonAddEmail_Click)
+Gui.FormDefaultEmails.ButtonAddEmail.Anchor(9)
+Gui.FormDefaultEmails.ButtonDeleteEmail.Create(Button)
+Gui.FormDefaultEmails.ButtonDeleteEmail.Size(1020,375)
+Gui.FormDefaultEmails.ButtonDeleteEmail.Position(5100,45)
+Gui.FormDefaultEmails.ButtonDeleteEmail.Caption("Delete")
+Gui.FormDefaultEmails.ButtonDeleteEmail.Event(Click,ButtonDeleteEmail_Click)
+Gui.FormDefaultEmails.ButtonDeleteEmail.Anchor(9)
+Gui.FormDefaultEmails.TextBoxEmail.Create(TextBox,"",True,4005,300,0,15,90,True,0,"Arial",8,-2147483643,1)
+Gui.FormDefaultEmails.TextBoxEmail.Anchor(13)
+Gui.FormDefaultEmails.ButtonSaveEmails.Create(Button)
+Gui.FormDefaultEmails.ButtonSaveEmails.Size(1020,375)
+Gui.FormDefaultEmails.ButtonSaveEmails.Position(5100,4680)
+Gui.FormDefaultEmails.ButtonSaveEmails.Anchor(10)
+Gui.FormDefaultEmails.ButtonSaveEmails.Caption("Save")
+Gui.FormDefaultEmails.ButtonSaveEmails.Event(Click,ButtonSaveEmails_Click)
+Gui.FormDefaultEmails.ButtonModifyEmails.Create(Button)
+Gui.FormDefaultEmails.ButtonModifyEmails.Size(1020,375)
+Gui.FormDefaultEmails.ButtonModifyEmails.Position(4050,4680)
+Gui.FormDefaultEmails.ButtonModifyEmails.Anchor(10)
+Gui.FormDefaultEmails.ButtonModifyEmails.Caption("Modify")
+Gui.FormDefaultEmails.ButtonModifyEmails.Event(Click,ButtonModifyEmails_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.bNewTemplate.Declare(Boolean, False)
+V.Global.bRowSelected.Declare(Boolean, False)
+V.Global.bEmailRowSelected.Declare(Boolean, False)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'GCG_5227_EmailTemplateMaintenance.g2u
+'Trey Seddon
+'9/12/2018
+'For iTool Co.
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.CallSub(GetData)
+F.Intrinsic.Control.CallSub(FormatGrid)
+F.Intrinsic.Control.CallSub(PopulateWildCards)
+
+V.Local.sIcon.Declare(String)
+F.Intrinsic.String.Build("{0}\GAB\GAS\gss2.ico",V.Caller.PluginsDir,v.Local.sIcon)
+GUI.FormDefaultEmails..Icon(V.Local.sIcon)
+GUI.FormEmailTemplate..Icon(V.Local.sIcon)
+GUI.FormEmailTemplateMaintenance..Icon(V.Local.sIcon)
+
+GUI.FormEmailTemplateMaintenance..Show
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.FormEmailTemplateMaintenance_UnLoad.Start
+F.ODBC.Connection!Conn.Close
+F.Intrinsic.Control.End
+Program.Sub.FormEmailTemplateMaintenance_UnLoad.End
+
+Program.Sub.GetData.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+F.ODBC.Connection!Conn.OpenCompanyConnection
+F.Data.DataTable.CreateFromSQL("EmailTemplates", "Conn", "select * from GCG_5227_Templates", True)
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.AddGridviewFromDatatable("TemplateGrid", "EmailTemplates")
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.GetData.End
+
+Program.Sub.FormatGrid.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'set the column properties
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "ID", "Visible", False)
+
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "SUBJECT", "Caption", "Subject")
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "SUBJECT", "HeaderFontBold", True)
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "SUBJECT", "ReadOnly", True)
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "SUBJECT", "AllowEdit", False)
+
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "BODY", "Caption", "Body")
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "BODY", "HeaderFontBold", True)
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "BODY", "ReadOnly", True)
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.SetColumnProperty("TemplateGrid", "BODY", "AllowEdit", False)
+
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.MainView("TemplateGrid")
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.FormatGrid.End
+
+Program.Sub.ButtonNew_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+GUI.FormEmailTemplateMaintenance..Enabled(False)
+V.Global.bNewTemplate.Set(True)
+gui.FormEmailTemplate..Show
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonNew_Click.End
+
+Program.Sub.FormEmailTemplate_UnLoad.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'Reset the new flag, clear the screen, close it, and make sure the main screen comes back up
+V.Global.bNewTemplate.Set(False)
+gui.FormEmailTemplate.TextSubject.Text("")
+gui.FormEmailTemplate.TextBody.Text("")
+gui.FormEmailTemplate.DropDownWildcards.ListIndex(-1)
+GUI.FormEmailTemplateMaintenance..AlwaysOnTop(True)
+gui.FormEmailTemplate..Visible(False)
+GUI.FormEmailTemplateMaintenance..Enabled(True)
+GUI.FormEmailTemplateMaintenance..AlwaysOnTop(False)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.FormEmailTemplate_UnLoad.End
+
+Program.Sub.ButtonSave_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'Save the email template to the database
+V.Local.sSubject.Declare(String)
+V.Local.sBody.Declare(String)
+
+V.Local.sSubject.Set(V.Screen.FormEmailTemplate!TextSubject.Text.Trim)
+V.Local.sBody.Set(V.Screen.FormEmailTemplate!TextBody.Text.Trim)
+
+'Check if it's blank
+F.Intrinsic.Control.If(V.Local.sSubject, =, "", "OR", V.Local.sBody, =, "")
+	F.Intrinsic.UI.Msgbox("Error: Subject and Body fields cannot be blank")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'check if it exactly matches another one
+V.Local.sSQL.Declare(String)
+V.Local.sRet.Declare(String)
+F.Intrinsic.String.Build("SUBJECT like'{0}' and BODY like '{1}'", V.Local.sSubject, V.Local.sBody, V.Local.sSQL)
+F.Data.DataTable.Select("EmailTemplates", V.Local.sSQL, V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet, =, "***NORETURN***")
+	'If it's new insert it, else update it
+	F.Intrinsic.Control.If(V.Global.bNewTemplate)
+		F.Intrinsic.String.Build("Insert into GCG_5227_Templates (SUBJECT, BODY) values ('{0}', '{1}')", V.Local.sSubject.PSQLFriendly, V.Local.sBody.PSQLFriendly, V.Local.sSQL)
+	F.Intrinsic.Control.Else
+		V.Local.iID.Declare(Long)
+		GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.GetSelectedRows("TemplateGrid", V.Local.iID)
+		GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.GetCellValueByColumnName("TemplateGrid", "ID", V.Local.iID, V.Local.iID)
+		F.Intrinsic.String.Build("Update GCG_5227_Templates set SUBJECT = '{0}', BODY = '{1}' where ID = '{2}'", V.Local.sSubject, V.Local.sBody, V.Local.iID, V.Local.sSQL)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Connection!Conn.Execute(V.Local.sSQL)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub(ReloadGrid)
+F.Intrinsic.Control.CallSub(FormEmailTemplate_Unload)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonSave_Click.End
+
+Program.Sub.ReloadGrid.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'Close the connection and datatables, rerun the subs to populate the grid
+F.Data.DataTable.Close("EmailTemplates")
+F.ODBC.Connection!Conn.Close
+V.Global.bRowSelected.Set(False)
+F.Intrinsic.Control.CallSub(GetData)
+F.Intrinsic.Control.CallSub(FormatGrid)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ReloadGrid.End
+
+Program.Sub.ButtonDelete_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'Delete an email template from the database
+'If no row is selected, don't do anything
+F.Intrinsic.Control.If(V.Global.bRowSelected, =, False)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Prompt the user, delete the record
+V.Local.iRet.Declare(Long)
+GUI.FormEmailTemplateMaintenance..Enabled(False)
+F.Intrinsic.UI.Msgbox("Are you sure you want to delete this email template?", "Delete Template", 4, V.Local.iRet)
+F.Intrinsic.Control.If(V.Local.iRet, =, 6)
+	GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.GetSelectedRows("TemplateGrid", V.Local.iRet)
+	GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.GetCellValueByColumnName("TemplateGrid", "ID", V.Local.iRet, V.Local.iRet)
+	V.Local.sSQL.Declare(String)
+	F.Intrinsic.String.Build("delete from GCG_5227_Templates where ID = {0}", V.Local.iRet, V.Local.sSQL)
+	F.ODBC.Connection!Conn.Execute(V.Local.sSQL)
+	F.Intrinsic.Control.CallSub(ReloadGrid)
+F.Intrinsic.Control.EndIf
+GUI.FormEmailTemplateMaintenance..Enabled(True)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonDelete_Click.End
+
+Program.Sub.EmailTemplateGrid_RowClick.Start
+V.Global.bRowSelected.Set(True)
+Program.Sub.EmailTemplateGrid_RowClick.End
+
+Program.Sub.ButtonModify_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'Open the screen to modify the selected record
+
+'If no row is selected, don't do anything
+F.Intrinsic.Control.If(V.Global.bRowSelected, =, False)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Get the values for that template
+V.Local.iRet.Declare(Long)
+V.Local.sSubject.Declare(String)
+V.Local.sBody.Declare(String)
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.GetSelectedRows("TemplateGrid", V.Local.iRet)
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.GetCellValueByColumnName("TemplateGrid", "SUBJECT", V.Local.iRet, V.Local.sSubject)
+GUI.FormEmailTemplateMaintenance.EmailTemplateGrid.GetCellValueByColumnName("TemplateGrid", "BODY", V.Local.iRet, V.Local.sBody)
+
+'load them on the screen
+gui.FormEmailTemplate.TextSubject.Text(V.Local.sSubject.Trim)
+gui.FormEmailTemplate.TextBody.Text(V.Local.sBody.Trim)
+gui.FormEmailTemplate..Show
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonModify_Click.End
+
+Program.Sub.PopulateWildCards.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'populate the drop down with the available wild cards
+gui.FormEmailTemplate.DropDownWildcards.AddItem("ORDER-NUM")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("CUST")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("CUSTOMER-PO")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("ORDER-DATE")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("DUE-DATE")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("BILL-TO-NAME")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("BILL-TO-ADRS1")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("BILL-TO-ADRS2")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("BILL-TO-CITY")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("BILL-TO-STATE")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("BILL-TO-ZIP")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("BILL-TO-COUNTRY")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("SHIP-TO-NAME")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("SHIP-TO-ADRS1")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("SHIP-TO-ADRS2")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("SHIP-TO-CITY")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("SHIP-TO-STATE")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("SHIP-TO-ZIP")
+gui.FormEmailTemplate.DropDownWildcards.AddItem("SHIP-TO-COUNTRY")
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.PopulateWildCards.End
+
+Program.Sub.ButtonCopyToClipboard_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'copy the wild card to the clipboard
+V.Local.sTemp.Declare(String)
+V.Local.sTemp.Set(V.Screen.FormEmailTemplate!DropDownWildcards.Value.Trim)
+F.Intrinsic.Control.If(V.Local.sTemp, !=, "")
+	F.Intrinsic.String.Build("<<<{0}>>>", V.Local.sTemp, V.Local.sTemp)
+	F.Intrinsic.UI.SetClipboardText(V.Local.sTemp)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonCopyToClipboard_Click.End
+
+Program.Sub.ButtonAddEmail_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'Check if the email field is not blank, is a (relatively) valid email, and isn't already in the system
+'If it passes those checks, add it to the database
+V.Local.sEmail.Declare(String)
+V.Local.sEmail.Set(V.Screen.FormDefaultEmails!TextBoxEmail.Text.Trim)
+F.Intrinsic.Control.If(V.Local.sEmail, !=, "")
+	V.Local.bAt.Declare(Boolean)
+	V.Local.bPeriod.Declare(Boolean)
+	F.Intrinsic.String.IsInString(V.Local.sEmail, "@", True, V.Local.bAt)
+	F.Intrinsic.String.IsInString(V.Local.sEmail, ".", True, V.Local.bPeriod)
+	F.Intrinsic.Control.If(V.Local.bAt, =, False, "OR", V.Local.bPeriod, =, False)
+		F.Intrinsic.UI.Msgbox("Error: Invalid email address")
+	F.Intrinsic.Control.Else	
+		V.Local.sSQL.Declare(String)
+		V.Local.sRet.Declare(String)
+		F.Intrinsic.String.Build("EMAIL like '{0}'", V.Local.sEmail, V.Local.sSQL)
+		F.Data.DataTable.Select("DefaultEmails", V.Local.sSQL, V.Local.sRet)
+		F.Intrinsic.Control.If(V.Local.sRet, =, "***NORETURN***")
+			F.Intrinsic.String.Build("insert into GCG_5227_Emails (EMAIL) values ('{0}')", V.Local.sEmail.PSQLFriendly, V.Local.sSQL)
+			F.ODBC.Connection!Conn.Execute(V.Local.sSQL)
+			F.Intrinsic.Control.CallSub(ReloadEmails)
+		F.Intrinsic.Control.EndIf
+		GUI.FormDefaultEmails.TextBoxEmail.Text("")	
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonAddEmail_Click.End
+
+Program.Sub.ReloadEmails.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+V.Global.bEmailRowSelected.Set(False)
+F.Data.DataTable.Close("DefaultEmails")
+F.Intrinsic.Control.CallSub(PopulateEmails)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ReloadEmails.End
+
+Program.Sub.ButtonDeleteEmail_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'If an email is selected, delete it
+F.Intrinsic.Control.If(V.Global.bEmailRowSelected)
+	V.Local.iID.Declare(Long)
+	V.Local.iRowIndex.Declare(Long)
+	GUI.FormDefaultEmails.EmailGrid.GetSelectedRows("EmailGridView", V.Local.iRowIndex)
+	GUI.FormDefaultEmails.EmailGrid.GetCellValueByColumnName("EmailGridView", "ID", V.Local.iRowIndex, V.Local.iID)
+	
+	V.Local.sSQL.Declare(String)
+	F.Intrinsic.String.Build("delete from GCG_5227_Emails where ID = '{0}'", V.Local.iID, V.Local.sSQL)
+	F.ODBC.Connection!Conn.Execute(V.Local.sSQL)
+	F.Intrinsic.Control.CallSub(ReloadEmails)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonDeleteEmail_Click.End
+
+Program.Sub.ButtonDefaultEmails_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+GUI.FormEmailTemplateMaintenance..Enabled(False)
+F.Intrinsic.Control.CallSub(PopulateEmails)
+GUI.FormDefaultEmails..Show
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonDefaultEmails_Click.End
+
+Program.Sub.FormDefaultEmails_UnLoad.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+F.Data.DataTable.Close("DefaultEmails")
+GUI.FormDefaultEmails..Visible(False)
+GUI.FormDefaultEmails.TextBoxEmail.Text("")
+GUI.FormEmailTemplateMaintenance..AlwaysOnTop(True)
+GUI.FormEmailTemplateMaintenance..AlwaysOnTop(False)
+GUI.FormEmailTemplateMaintenance..Enabled(True)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.FormDefaultEmails_UnLoad.End
+
+Program.Sub.PopulateEmails.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'Populate the data in the default email grid
+F.Data.DataTable.CreateFromSQL("DefaultEmails", "Conn", "select ID, RTRIM(EMAIL) as EMAIL from GCG_5227_Emails", True)
+GUI.FormDefaultEmails.EmailGrid.AddGridviewFromDatatable("EmailGridView", "DefaultEmails")
+
+GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "ID", "Visible", False)
+GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "ID", "AllowEdit", False)
+GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "EMAIL", "Caption", "Email")
+GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "EMAIL", "HeaderFontBold", True)
+GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "EMAIL", "AllowEdit", False)
+GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "EMAIL", "ReadOnly", True)
+
+GUI.FormDefaultEmails.EmailGrid.MainView("EmailGridView")
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.PopulateEmails.End
+
+Program.Sub.EmailGrid_RowClick.Start
+V.Global.bEmailRowSelected.Set(True)
+Program.Sub.EmailGrid_RowClick.End
+
+Program.Sub.ButtonSaveEmails_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'Check for valid emails
+V.Local.bValidEmails.Declare(Boolean, True)
+V.Local.iCounter.Declare(Long)
+V.Local.bAt.Declare(Boolean)
+V.Local.bPeriod.Declare(Boolean)
+F.Intrinsic.Control.For(V.Local.iCounter, 0, V.DataTable.DefaultEmails.RowCount--, 1)
+	F.Intrinsic.Control.If(V.DataTable.DefaultEmails(V.Local.iCounter).EMAIL!FieldValTrim, !=, "")
+		F.Intrinsic.String.IsInString(V.DataTable.DefaultEmails(V.Local.iCounter).EMAIL!FieldValTrim, "@", True, V.Local.bAt)
+		F.Intrinsic.String.IsInString(V.DataTable.DefaultEmails(V.Local.iCounter).EMAIL!FieldValTrim, ".", True, V.Local.bPeriod)
+		F.Intrinsic.Control.If(V.Local.bAt, =, False, "OR", V.Local.bPeriod, =, False)
+			V.Local.bValidEmails.Set(False)
+			F.Intrinsic.Control.ExitFor(V.Local.iCounter)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		V.Local.bValidEmails.Set(False)
+		F.Intrinsic.Control.ExitFor(V.Local.iCounter)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.iCounter)
+
+F.Intrinsic.Control.If(V.Local.bValidEmails, =, False)
+	F.Intrinsic.UI.Msgbox("Error: Invalid email address")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+		
+'save the emails if they have been modified
+F.Data.DataTable.SaveToDB("DefaultEmails", "Conn", "GCG_5227_Emails", "ID", 2)
+
+'relock the field
+GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "EMAIL", "AllowEdit", False)
+GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "EMAIL", "ReadOnly", True)
+V.Global.bEmailRowSelected.Set(False)
+
+GUI.FormDefaultEmails.ButtonAddEmail.Enabled(True)
+GUI.FormDefaultEmails.TextBoxEmail.Enabled(True)
+GUI.FormDefaultEmails.ButtonModifyEmails.Enabled(True)
+GUI.FormDefaultEmails.ButtonDeleteEmail.Enabled(True)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonSaveEmails_Click.End
+
+Program.Sub.ButtonModifyEmails_Click.Start
+F.Intrinsic.Control.If(V.DataTable.DefaultEmails.RowCount, !=, 0)
+	'unlocks the fields so they can be edited
+	GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "EMAIL", "AllowEdit", True)
+	GUI.FormDefaultEmails.EmailGrid.SetColumnProperty("EmailGridView", "EMAIL", "ReadOnly", False)
+	V.Global.bEmailRowSelected.Set(False)
+	
+	GUI.FormDefaultEmails.ButtonAddEmail.Enabled(False)
+	GUI.FormDefaultEmails.TextBoxEmail.Enabled(False)
+	GUI.FormDefaultEmails.ButtonModifyEmails.Enabled(False)
+	GUI.FormDefaultEmails.ButtonDeleteEmail.Enabled(False)
+	
+	GUI.FormDefaultEmails.EmailGrid.SelectRow("EmailGridView", 0)
+F.Intrinsic.Control.EndIf
+Program.Sub.ButtonModifyEmails_Click.End
+
+
