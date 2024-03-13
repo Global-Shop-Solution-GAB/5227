@@ -1,0 +1,678 @@
+Program.Sub.ScreenSU.Start
+Gui.F_ContactList..create
+Gui.F_ContactList..caption("Email Order Acknowledgement")
+Gui.F_ContactList..size(7485,6870)
+Gui.F_ContactList..position(0,0)
+Gui.F_ContactList..event(UnLoad,f_contactlist_unload)
+Gui.F_ContactList..forecolor(0)
+Gui.F_ContactList..fontstyle(,)
+Gui.F_ContactList..BackColor(-2147483633)
+Gui.F_ContactList..mousepointer(0)
+Gui.F_ContactList..MinX(0)
+Gui.F_ContactList..MinY(0)
+Gui.F_ContactList.lstEmails.create(listbox)
+Gui.F_ContactList.lstEmails.size(3045,1050)
+Gui.F_ContactList.lstEmails.position(4000,500)
+Gui.F_ContactList.lstEmails.tabstop(True)
+Gui.F_ContactList.lstEmails.tabindex(4)
+Gui.F_ContactList.txtEmail.create(textbox,"",True,3690,300,0,100,1200,True,0,"Arial",8,-2147483643,1)
+Gui.F_ContactList.txtEmail.text("")
+Gui.F_ContactList.txtEmail.tabstop(True)
+Gui.F_ContactList.txtEmail.tabindex(2)
+Gui.F_ContactList.cboContact.create(combobox)
+Gui.F_ContactList.cboContact.size(3690,330)
+Gui.F_ContactList.cboContact.position(100,500)
+Gui.F_ContactList.cboContact.event(Click,cbocontact_click)
+Gui.F_ContactList.cboContact.tabstop(True)
+Gui.F_ContactList.cboContact.tabindex(1)
+Gui.F_ContactList.cmdAdd.create(button)
+Gui.F_ContactList.cmdAdd.caption("Add")
+Gui.F_ContactList.cmdAdd.size(840,375)
+Gui.F_ContactList.cmdAdd.position(100,1600)
+Gui.F_ContactList.cmdAdd.event(Click,cmdadd_click)
+Gui.F_ContactList.cmdAdd.tabstop(True)
+Gui.F_ContactList.cmdAdd.tabindex(3)
+Gui.F_ContactList.cmdRemove.create(button)
+Gui.F_ContactList.cmdRemove.caption("Remove")
+Gui.F_ContactList.cmdRemove.size(810,375)
+Gui.F_ContactList.cmdRemove.position(1100,1600)
+Gui.F_ContactList.cmdRemove.event(Click,cmdremove_click)
+Gui.F_ContactList.cmdRemove.tabstop(True)
+Gui.F_ContactList.cmdRemove.tabindex(5)
+Gui.F_ContactList.lbl1.create(label,"Choose an existing contact",True,2565,255,1,100,300,True,0,"Arial",8,-2147483633,0)
+Gui.F_ContactList.lbl2.create(label,"Enter an email address",True,2850,255,1,100,1000,True,0,"Arial",8,-2147483633,0)
+Gui.F_ContactList.cmdSend.create(button)
+Gui.F_ContactList.cmdSend.caption("Send")
+Gui.F_ContactList.cmdSend.size(855,360)
+Gui.F_ContactList.cmdSend.position(100,5900)
+Gui.F_ContactList.cmdSend.event(Click,cmdsend_click)
+Gui.F_ContactList.cmdSend.tabstop(True)
+Gui.F_ContactList.cmdSend.tabindex(8)
+Gui.F_ContactList.mltxtBody.create(textboxm)
+Gui.F_ContactList.mltxtBody.size(6915,2595)
+Gui.F_ContactList.mltxtBody.position(100,3225)
+Gui.F_ContactList.mltxtBody.tabstop(True)
+Gui.F_ContactList.mltxtBody.tabindex(7)
+Gui.F_ContactList.txtSubject.create(textbox,"",True,6930,300,0,90,2625,True,0,"Arial",8,-2147483643,1)
+Gui.F_ContactList.txtSubject.text("")
+Gui.F_ContactList.txtSubject.maxLength(255)
+Gui.F_ContactList.txtSubject.tabstop(True)
+Gui.F_ContactList.txtSubject.tabindex(6)
+Gui.F_ContactList.lbl3.create(label,"Subject",True,1935,255,1,100,2400,True,0,"Arial",8,-2147483633,0)
+Gui.F_ContactList.lbl4.create(label,"Body",True,1935,255,1,100,3000,True,0,"Arial",8,-2147483633,0)
+Gui.F_ContactList.lbl5.create(label,"Recipients",True,1935,255,1,4000,300,True,0,"Arial",8,-2147483633,0)
+Gui.F_ContactList.ButtonEmailBrowser.Create(Button)
+Gui.F_ContactList.ButtonEmailBrowser.Size(375,375)
+Gui.F_ContactList.ButtonEmailBrowser.Position(795,2235)
+Gui.F_ContactList.ButtonEmailBrowser.Caption("^")
+Gui.F_ContactList.ButtonEmailBrowser.Event(Click,ButtonEmailBrowser_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.Global.sCompNo.Declare(String)
+Variable.Global.sCompType.Declare(String)
+Variable.Global.sList.Declare(String)
+Variable.Global.sOrderNo.Declare(String)
+Variable.Global.sCustPO.Declare(String)
+Variable.Global.sCustomer.Declare(String)
+V.Global.sData.Declare(String)
+V.Global.sWildCards.Declare(String)
+V.Global.sID.Declare(String)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'8/31/09
+'Email Order Acknowledgement as .pdf from Order Header Email button
+'ANS
+'Hook 11780 - Email Button hook
+'Added Email Hook to code on 9/3/2010 by ENM
+'Added PopDefaultText and GetCustInfo on 11/24/10 for USP;  This populates default subject and body text to e-mail
+
+'Modified on 9/12/2018
+'Trey Seddon
+'GCG_5227_EmailOrderAckVariation.g2u
+'For iTool Co.
+'Added browser to select email templates,
+'Default emails auto populate,
+'Fixed bug in duplicate check
+'Updated email method to newer QueueMessage instead of CreateEmMessage
+'Also added ability to run from CRPreviewer Script 1 button
+'Hook 11890, OE Print Button
+'11883 OE pre browser
+'11900 OE Pre exit
+'42210 CRPreview script 1
+'GCG_5227_Emails
+'GCG_5227_Templates
+'GCG_5227_PassedData
+
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+V.Local.sSQL.Declare(String)
+V.Local.sRet.Declare(String)
+F.ODBC.Connection!Con.OpenCompanyConnection
+F.Intrinsic.Control.SelectCase(V.Caller.Hook)
+	F.Intrinsic.Control.Case(11780)
+		'Email button hook
+		'Passed variables:
+		'Contact			1
+		'Order				3
+		'Cust				6
+		'Bill-to-name		7
+		'ship-to-name		8
+		'bill-to-adrs1		9
+		'ship-to-adrs1		10
+		'bill-to-adrs2		11
+		'ship-to-adrs2		12
+		'bill-to-city		13
+		'bill-to-state		14
+		'bill-to-zip		15
+		'ship-to-city		16
+		'ship-to-state		17
+		'ship-to-zip		18
+		'bill-to-country	19
+		'ship-to-country	20
+		'order-date			23
+		'due-date			24
+		'customer-po		25
+		V.Global.sCompNo.Set(V.Passed.000006)
+		V.Global.sOrderNo.Set(V.Passed.000003)
+		V.Global.sCompType.Set("C")
+		V.Passed.777777.Set(1)
+		F.Intrinsic.Control.CallSub(BuildData)
+		F.Intrinsic.String.Split(V.Global.sData, "!*!", V.Global.sData)
+		F.Intrinsic.Control.CallSub(Launch)
+		
+	F.Intrinsic.Control.Case(11890)
+		'OE print button
+		'store data for use in CRPreviewer script 1
+		F.Intrinsic.Control.CallSub(BuildData)
+		
+		F.Intrinsic.String.Build("delete from GCG_5227_PassedData where Terminal = '{0}' and ORDER_NO = '{1}'", V.Caller.Terminal, V.Passed.000003, V.Local.sSQL)
+		F.ODBC.Connection!Con.Execute(V.Local.sSQL)
+		
+		F.Intrinsic.String.Build("Insert into GCG_5227_PassedData (TERMINAL, ORDER_NO, DATA) Values ('{0}', '{1}', '{2}')", V.Caller.Terminal, V.Passed.000003, V.Global.sData.PSQLFriendly, V.Local.sSQL)
+		F.ODBC.Connection!Con.Execute(V.Local.sSQL)
+		F.ODBC.Connection!Con.Close
+		
+	F.Intrinsic.Control.Case(42210)
+		'retrieve data, CRPreviewer Script 1
+		
+		'If this is not the order acknowledgement report, do nothing
+		F.Intrinsic.Control.If(V.Passed.DATA-ReportId, =, 52, "OR", V.Passed.DATA-ReportId, =, 54)
+		
+			F.Intrinsic.String.Build("select  RTRIM(ID) as ID, RTRIM(ORDER_NO) as ORDER_NO, RTRIM(DATA) as DATA from GCG_5227_PassedData where Terminal = '{0}'", V.Caller.Terminal, V.Local.sSQL)
+			F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSQL, V.Local.sRet)
+			
+			'If there's no data, we don't need to do anything
+			F.Intrinsic.Control.If(V.Ambient.ExecuteAndReturnEOF)
+				F.Intrinsic.UI.Msgbox("The email program was unable to run because there was no data available. Close the crystal reports previewer and reprint the report to generate the data needed to send the emails.")
+				F.ODBC.Connection!Con.Close
+				F.Intrinsic.Control.End
+			F.Intrinsic.Control.EndIf
+			
+			V.Local.bMultiple.Declare(Boolean)
+			F.Intrinsic.String.IsInString(V.Local.sRet, "#$#", True, V.Local.bMultiple)
+			
+			F.Intrinsic.Control.If(V.Local.bMultiple)
+				'To deal with if multiple orders are open and printed at the same time
+				V.Local.iWidths.Declare(Long)
+				V.Local.iWidths.Redim(0, 1)
+				V.Local.iWidths(0).Set(100)
+				V.Local.iWidths(1).Set(100)
+				V.Local.sColumns.Declare(String)
+				V.Local.sColumns.Redim(0,1)
+				V.Local.sColumns(0).Set("ID")
+				V.Local.sColumns(1).Set("Order Number")
+				V.Local.sChoice.Declare(String)
+				F.Intrinsic.String.Build("select  RTRIM(ID) as ID, RTRIM(ORDER_NO) as ORDER_NO from GCG_5227_PassedData where Terminal = '{0}'", V.Caller.Terminal, V.Local.sSQL)
+				F.Intrinsic.UI.Browser("Order Acknowledgements", "con", V.Local.sSQL, V.Local.sColumns, V.Local.iWidths, V.Local.sChoice)
+				
+				'quit if cancel is selected
+				F.Intrinsic.Control.If(V.Local.sChoice, =, "***CANCEL***")
+					F.Intrinsic.Control.End
+				F.Intrinsic.Control.EndIf
+				
+				'otherwise set the order number and get that data
+				F.Intrinsic.String.Split(V.Local.sChoice, "*!*", V.Local.sChoice)
+				V.Global.sID.Set(V.Local.sChoice(0))
+				F.Intrinsic.String.Build("select  RTRIM(ID) as ID, RTRIM(ORDER_NO) as ORDER_NO, RTRIM(DATA) as DATA from GCG_5227_PassedData where ID = '{0}'", V.Global.sID, V.Local.sSQL)
+				F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSQL, V.Local.sRet)
+				
+			F.Intrinsic.Control.EndIf
+			
+			'set data
+			F.Intrinsic.String.Split(V.Local.sRet, "*!*", V.Local.sRet)
+			V.Global.sOrderNo.Set(V.Local.sRet(1))
+			V.Global.sID.Set(V.Local.sRet(0))
+			
+			F.Intrinsic.String.Split(V.Local.sRet(2), "!*!", V.Global.sData)
+			V.Global.sCompNo.Set(V.Global.sData(1))
+			V.Global.sCompType.Set("C")
+			
+			F.Intrinsic.Control.CallSub(Launch)
+		F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.CaseAny(11900, 11565)
+		'delete data (if it exists)
+		'11883 OE pre browser
+		'11900 OE Pre exit
+		'11565 Order selected
+		'F.Intrinsic.String.Build("delete from GCG_5227_PassedData where Terminal = '{0}' and ORDER_NO = '{1}'", V.Caller.Terminal, V.Passed.000003, V.Local.sSQL)
+		F.Intrinsic.String.Build("delete from GCG_5227_PassedData where Terminal = '{0}'", V.Caller.Terminal, V.Local.sSQL)
+		F.ODBC.Connection!Con.Execute(V.Local.sSQL)
+		F.ODBC.Connection!Con.Close
+F.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.BuildData.Start
+'Build the global string for the order data
+F.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}!*!{5}!*!{6}!*!{7}!*!{8}!*!{9}!*!{10}!*!{11}!*!{12}!*!{13}!*!{14}!*!{15}!*!{16}!*!{17}!*!{18}", V.Passed.000003, V.Passed.000006, V.Passed.000025, V.Passed.000023, V.Passed.000024, V.Passed.000007, V.Passed.000009, V.Passed.000011, V.Passed.000013, V.Passed.000014, V.Passed.000015, V.Passed.000019, V.Passed.000008, V.Passed.000010, V.Passed.000012, V.Passed.000016, V.Passed.000017, V.Passed.000018, V.Passed.000020, V.Global.sData)
+Program.Sub.BuildData.End
+
+Program.Sub.Launch.Start
+'Prepare for launching the email screen, and launch it
+V.Local.sCaption.Declare(String)
+F.Intrinsic.String.Build("Email Order Acknowledgement - {0}", V.Global.sOrderNo, V.Local.sCaption)
+GUI.F_ContactList..Caption(V.Local.sCaption)
+V.Local.sIcon.Declare(String)
+F.Intrinsic.String.Build("{0}\GAB\GAS\gss2.ico",V.Caller.PluginsDir,v.Local.sIcon)
+GUI.F_ContactList..Icon(V.Local.sIcon)
+V.Global.sList.Redim(-1,-1)
+V.Global.sWildCards.Set("<<<ORDER-NUM>>>*!*<<<CUST>>>*!*<<<CUSTOMER-PO>>>*!*<<<ORDER-DATE>>>*!*<<<DUE-DATE>>>*!*<<<BILL-TO-NAME>>>*!*<<<BILL-TO-ADRS1>>>*!*<<<BILL-TO-ADRS2>>>*!*<<<BILL-TO-CITY>>>*!*<<<BILL-TO-STATE>>>*!*<<<BILL-TO-ZIP>>>*!*<<<BILL-TO-COUNTRY>>>*!*<<<SHIP-TO-NAME>>>*!*<<<SHIP-TO-ADRS1>>>*!*<<<SHIP-TO-ADRS2>>>*!*<<<SHIP-TO-CITY>>>*!*<<<SHIP-TO-STATE>>>*!*<<<SHIP-TO-ZIP>>>*!*<<<SHIP-TO-COUNTRY>>>")
+F.Intrinsic.String.Split(V.Global.sWildCards, "*!*", V.Global.sWildCards)
+F.Intrinsic.Control.CallSub("PopContacts")
+F.Intrinsic.Control.CallSub(Popdefaulttext)
+F.Intrinsic.Control.CallSub(PopulateDefaultEmails)
+Gui.F_ContactList..Show
+Program.Sub.Launch.End
+
+Program.Sub.cmdadd_click.Start
+V.Local.i.Declare(Long)
+V.Local.bFound.Declare(Boolean,False)
+
+'Exit if no email selected or enetered
+F.Intrinsic.Control.If(V.Screen.F_ContactList!txtEmail.Text,=,"")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Search for email address in memory array  to avoid duplicates
+F.Intrinsic.Control.For(V.Local.i,0,V.Global.sList.UBound,1)
+
+	F.Intrinsic.Control.If(V.Screen.F_ContactList!txtEmail.Text.Trim,=,V.Global.sList(v.Local.i))
+		V.Local.bFound.Set(True)
+		F.Intrinsic.Control.ExitFor(V.Local.i)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i)
+
+'If email not found in list, add it to memory array
+F.Intrinsic.Control.If(V.Local.bFound,=,False)
+	F.Intrinsic.Control.If(V.Global.sList.UBound,=,-1)
+		V.Global.sList.Redim(0,0)
+	F.Intrinsic.Control.Else
+		V.Global.sList.RedimPreserve(1)
+	F.Intrinsic.Control.EndIf
+	V.Global.sList(v.Global.sList.UBound).Set(V.Screen.F_ContactList!txtEmail.Text)
+F.Intrinsic.Control.EndIf
+
+'Fill list from memory array
+F.Intrinsic.Control.CallSub("FillList")
+
+'Clear email selection
+Gui.F_ContactList.cboContact.ListIndex(0)
+Gui.F_ContactList.txtEmail.Text("")
+Program.Sub.cmdadd_click.End
+
+Program.Sub.f_contactlist_unload.Start
+F.Intrinsic.Control.If(V.ODBC.con.State,=,1)
+	F.ODBC.Connection!con.close
+F.Intrinsic.Control.Endif
+F.Intrinsic.Control.End
+Program.Sub.f_contactlist_unload.End
+
+Program.Sub.cmdremove_click.Start
+V.Local.i.Declare(Long)
+V.Local.iStart.Declare(Long)
+V.Local.iEnd.Declare(Long)
+V.Local.iTemp.Declare(Long)
+V.Local.bFound.Declare(Boolean)
+
+'Exit if no email selected in list
+F.Intrinsic.Control.If(V.Screen.F_ContactList!lstEmails.Text,=,"")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'Search memory array for ordinal of selected email
+F.Intrinsic.Control.For(V.Local.iStart,0,V.Global.sList.UBound,1)
+	F.Intrinsic.Control.If(V.Screen.F_ContactList!lstEmails.Text,=,V.Global.sList(v.Local.iStart))
+		V.Local.bFound.Set(True)
+		F.Intrinsic.Control.ExitFor(V.Local.iStart)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.iStart)
+
+'Shift memory array to remove selected email
+F.Intrinsic.Math.Sub(V.Global.sList.UBound,1,V.Local.iEnd)
+F.Intrinsic.Control.For(V.Local.i,V.Local.iStart,V.Local.iEnd,1)
+	F.Intrinsic.Math.Add(V.Local.i,1,V.Local.iTemp)
+	V.Global.sList(v.Local.i).set(V.Global.sList(v.Local.iTemp))
+F.Intrinsic.Control.Next(V.Local.i)
+F.Intrinsic.Control.If(V.Global.sList.UBound,=,0)
+	V.Global.sList.Redim(-1,-1)
+F.Intrinsic.Control.else
+	V.Global.sList.RedimPreserve(0,V.Local.iEnd)
+F.Intrinsic.Control.EndIf
+
+'Fill list from memory array
+F.Intrinsic.Control.CallSub("FillList")
+
+'Clear email selection
+Gui.F_ContactList.cboContact.ListIndex(0)
+Gui.F_ContactList.txtEmail.Text("")
+Program.Sub.cmdremove_click.End
+
+Program.Sub.cmdsend_click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+V.Local.i.Declare(Long)
+V.Local.sSenderEmail.Declare(String)
+V.Local.sSenderName.Declare(String)
+V.Local.sAttach.Declare(String)
+V.Local.sParamName.Declare(String)
+V.Local.sParamVal.Declare(String)
+V.Local.sTemp.Declare(String)
+V.Local.sPN.Declare(String)
+V.Local.sPV.Declare(String)
+V.Local.sCallParams.Declare(String)
+
+GUI.F_ContactList..Visible(False)
+
+'End script if no emails added to list
+F.Intrinsic.Control.If(V.Global.sList.UBound,=,-1)
+	F.Intrinsic.Control.CallSub("f_contactlist_unload")
+F.Intrinsic.Control.EndIf
+
+'Get email address of GS User
+F.Global.Security.GetUserEmail(V.Caller.User,V.Local.sSenderEmail)
+'Alert and end script if no email found for GS User
+F.Intrinsic.control.if(V.Local.sSenderEmail,=,"")
+	F.Intrinsic.UI.Msgbox("Error in email procedure.  The GS User does not have an email address associated with it in User Security Maintenance.")
+	F.Intrinsic.Control.CallSub("f_contactlist_unload")
+F.Intrinsic.control.endif
+'Get full name of GS User
+F.Global.Security.GetFullName(V.Caller.User,V.Local.sSenderName)
+
+'Set attachment filename and path
+F.Intrinsic.String.Concat(V.Caller.PluginsDir,"\Orders\",V.Global.sOrderNo,".pdf",V.Local.sAttach)
+'Call GS program to build BI table data
+
+F.Intrinsic.String.Concat(V.Global.sOrderNo,"!*!P!*! !*!|~|CRYSTAL-OVERRIDE|~|",V.Local.sCallParams)
+F.Intrinsic.Debug.SetLA("Callwrapper params: ",V.Local.sCallParams)
+F.Global.General.CallWrapperSync(910050,V.Local.sCallParams)
+F.Intrinsic.Control.CallSub(Getrptid)
+
+'Call BI Order Acknowledgement report
+V.Local.sPN.Set("Terminal*!*ReportID*!*IncludesTax*!*Dec")
+F.Intrinsic.String.Concat(V.caller.Terminal,"*!*",V.args.RptID,"*!**!*.2",V.Local.sPV)
+F.Intrinsic.Debug.SetLA("Report values: ",V.Local.sPV)
+F.Intrinsic.String.Split(V.Local.sPN,"*!*",V.Local.sParamName)
+F.Intrinsic.String.Split(V.Local.sPV,"*!*",V.Local.sParamVal)
+F.Global.BI.SaveReport(V.args.RptID,1,V.Local.sParamName,V.Local.sParamVal,V.Local.sAttach)
+
+V.Local.iUserID.Declare(Long)
+F.Global.Security.GetUserId(V.Caller.User, V.Caller.CompanyCode, V.Local.iUseriD)
+
+V.Local.sSender.Declare(String)
+F.Intrinsic.String.Build("{0}*!*{1}", V.Local.sSenderEmail, V.Local.sSenderName, V.Local.sSender)
+
+V.Local.sScript.Declare(String, "GCG_5227_EmailOrderAckVariation.g2u")
+
+'Get sender names
+V.Local.sSQL.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sRecipients.Declare(String)
+F.Intrinsic.String.Build("select NAME from CONTACT where EMAIL1 = '{0}'", V.Global.sList(0), V.Local.sSQL)
+F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSQL, V.Local.sRet)
+F.Intrinsic.String.Build("{0}*!*{1}", V.Local.sRet, V.Global.sList(0), V.Local.sRecipients)
+F.Intrinsic.Control.For(V.Local.i, 1, V.Global.sList.UBound, 1)
+	F.Intrinsic.String.Build("select NAME from CONTACT where EMAIL1 = '{0}'", V.Global.sList(V.Local.i), V.Local.sSQL)
+	F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSQL, V.Local.sRet)
+	F.Intrinsic.String.Build("{0}@!@{1}*!*{2}", V.Local.sRecipients, V.Local.sRet, V.Global.sList(V.Local.i), V.Local.sRecipients)
+F.Intrinsic.Control.Next(V.Local.i)
+
+'get attatchement
+F.Intrinsic.String.Split(V.Local.sAttach, "\", V.Local.sAttach)
+V.Local.sAttachment.Declare(String)
+V.Local.sAttachment.Set(V.Local.sAttach(V.Local.sAttach.UBound))
+
+V.Local.sAttachmentPath.Declare(String)
+F.Intrinsic.String.Build("{0}*!*{1}\Orders", V.Local.sAttachment, V.Caller.PluginsDir, V.Local.sAttachment)
+
+'send email
+F.Global.Messaging.QueueMessage(V.Caller.CompanyCode, V.Local.iUserID, V.Local.sScript, V.Screen.F_ContactList!txtSubject.text.Trim, V.Local.sSender, V.Local.sRecipients, V.Screen.F_ContactList!mltxtBody.Text.Trim, 5,,False,,,,,,,,v.Local.sAttachment,False)
+
+'delete data
+F.Intrinsic.String.Build("delete from GCG_5227_PassedData where Terminal = '{0}' and ORDER_NO = '{1}'", V.Caller.Terminal, V.Global.sOrderNo, V.Local.sSQL)
+F.ODBC.Connection!Con.Execute(V.Local.sSQL)
+
+'End script
+F.Intrinsic.Control.CallSub("f_contactlist_unload")
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdsend_click.End
+
+Program.Sub.cbocontact_click.Start
+V.Local.iPos.Declare(Long)
+V.Local.sEmail.Declare(String)
+
+F.Intrinsic.Control.If(V.Screen.F_ContactList!cboContact.Text,<>,"")
+	'Select contact from drop down list - populate textbox
+	F.Intrinsic.String.Instr(V.Screen.F_ContactList!cboContact.Text,"<",V.Local.ipos)
+	F.Intrinsic.String.mid(V.Screen.F_ContactList!cboContact.Text,V.Local.iPos,V.Local.sEmail)
+	F.Intrinsic.String.Replace(V.Local.sEmail,"<","",V.Local.sEmail)
+	F.Intrinsic.String.Replace(V.Local.sEmail,">","",V.Local.sEmail)
+	Gui.F_ContactList.txtEmail.Text(V.Local.sEmail)
+F.Intrinsic.Control.Else
+	Gui.F_ContactList.txtEmail.Text("")
+F.Intrinsic.Control.endif
+Program.Sub.cbocontact_click.End
+
+Program.Sub.PopContacts.Start
+V.Local.sSQL.Declare(String)
+V.Local.sTemp.Declare(String)
+
+'Add blank item to drop down list
+Gui.F_ContactList.cboContact.AddItem("")
+
+'Fill drop down list with contacts/emails for the customer on the order
+F.Intrinsic.String.Concat("Select Name, Alt_ID, Email1, Email2, Name_Last, Name_First from Contact where Cust='",V.Global.sCompNo,"' and Type='",V.Global.sCompType,"' order by Name_Last, Name_First",V.Local.sSQL)
+F.ODBC.Connection!con.OpenRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.Control.DoUntil(V.ODBC.con!rst.EOF,=,True)
+	F.Intrinsic.Control.If(V.ODBC.con!rst.FieldValTrim!Email1,<>,"")
+		F.Intrinsic.string.Concat(V.ODBC.con!rst.FieldValTrim!Name," <",V.ODBC.con!rst.FieldValTrim!Email1,">",V.Local.sTemp)
+		Gui.F_ContactList.cboContact.AddItem(V.Local.sTemp)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.If(V.ODBC.con!rst.FieldValTrim!Email2,<>,"")
+		F.Intrinsic.string.Concat(V.ODBC.con!rst.FieldValTrim!Name," <",V.ODBC.con!rst.FieldValTrim!Email2,">",V.Local.sTemp)
+		Gui.F_ContactList.cboContact.AddItem(V.Local.sTemp)
+	F.Intrinsic.Control.EndIf
+
+	F.ODBC.con!rst.MoveNext
+F.Intrinsic.Control.Loop
+F.ODBC.con!rst.Close
+Program.Sub.PopContacts.End
+
+Program.Sub.FillList.Start
+V.Local.i.Declare(Long)
+
+Gui.F_ContactList.lstEmails.ClearItems
+
+'Fill listbox from memory array
+F.Intrinsic.Control.For(V.Local.i,0,V.Global.sList.UBound,1)
+	Gui.F_ContactList.lstEmails.AddItem(V.Global.sList(v.Local.i))
+F.Intrinsic.Control.Next(V.Local.i)
+Program.Sub.FillList.End
+
+Program.Sub.GetRptID.Start
+V.Local.sQuery.Declare(String)
+V.Local.sReportID.Declare(String)
+V.Local.sOrderNo.Declare(String)
+
+F.Intrinsic.String.LPad(V.Global.sOrderNo,"0",7,V.Local.sOrderNo)
+
+F.Intrinsic.String.concat("SELECT * FROM V_BI_ACKNWLDGMNT WHERE ORDER_NO='",V.Local.sOrderNo,"' AND TERMINAL='",V.Caller.Terminal,"'",V.Local.sQuery)
+f.Intrinsic.Debug.SetLA("Getting report ID: ",V.Local.sQuery)
+F.ODBC.Connection!con.OpenRecordsetRO("rstRptID",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.con!rstRptID.EOF,<>,True)
+	V.local.sReportID.set(V.odbc.con!rstRptID.fieldvaltrim!RPTID)
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("Unable to find Order Data.  Please contact Global Shop.")
+F.Intrinsic.Control.EndIf
+F.ODBC.con!rstRptID.Close
+
+F.Intrinsic.Variable.AddRV("RptID",V.Local.sReportID)
+Program.Sub.GetRptID.End
+
+Program.Sub.PopDefaultText.Start
+'Added 11-24-10 for USPLabs
+V.Local.sFile.Declare(String)
+V.Local.sText.Declare(String)
+V.Local.bExists.Declare(Boolean)
+V.Local.sSubject.Declare(String)
+V.Local.sBody.Declare(String)
+V.Local.sError.Declare(String)
+
+Function.Intrinsic.Control.SetErrorHandler("PopDefaultText_Err")
+Function.Intrinsic.Control.ClearErrors
+
+F.Intrinsic.String.Concat(V.Caller.PluginsDir,"\GAB\GAS\Order_Ack_PDF.txt",V.Local.sFile)
+F.Intrinsic.File.Exists(V.Local.sFile,V.Local.bExists)
+F.Intrinsic.Control.If(V.Local.bExists,=,False)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub(Getcustinfo)
+
+F.Intrinsic.File.File2String(V.Local.sFile,V.Local.sText)
+F.Intrinsic.String.Replace(V.local.sText,"%ORDER%",V.Global.sOrderNo,V.Local.sText)
+F.Intrinsic.String.Replace(V.Local.sText,"%CUSTPO%",V.Global.sCustPO,V.Local.sText)
+F.Intrinsic.String.Replace(V.Local.sText,"%CUSTOMER%",V.Global.sCustomer,V.Local.sText)
+F.Intrinsic.String.Split(V.Local.sText,"*!*",V.Local.sText)
+
+V.Local.sSubject.Set(V.Local.sText(0))
+F.Intrinsic.Control.If(V.Local.sText.UBound,>,0)
+	V.Local.sBody.Set(V.Local.sText(1))
+F.Intrinsic.Control.EndIf
+
+Gui.F_ContactList.txtSubject.Text(V.Local.sSubject)
+Gui.F_ContactList.mltxtBody.Text(V.Local.sBody)
+
+Function.Intrinsic.Control.ExitSub
+Function.Intrinsic.Control.Label("PopDefaultText_Err")
+Function.Intrinsic.Control.If(Variable.Ambient.ErrorNumber,"<>",0)
+	Function.Intrinsic.String.Concat("Error Occurred ",Variable.Ambient.ErrorNumber," with description ",Variable.Ambient.ErrorDescription,Variable.Local.sError)
+Function.Intrinsic.Control.EndIf
+Program.Sub.PopDefaultText.End
+
+Program.Sub.GetCustInfo.Start
+'Added 11/24/10 for USPLabs
+V.Local.sQuery.Declare(String)
+V.Local.sCustPO.Declare(String)
+V.Local.sError.Declare(String)
+
+Function.Intrinsic.Control.SetErrorHandler("GetCustPO_Err")
+Function.Intrinsic.Control.ClearErrors
+
+F.Intrinsic.String.Concat("SELECT CUSTOMER_PO FROM V_ORDER_HEADER WHERE ORDER_NO='",V.Global.sOrderNo,"'",V.Local.sQuery)
+F.ODBC.Connection!con.OpenRecordsetRO("rstCustPO",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.con!rstCustPO.EOF,<>,True)
+	V.Global.sCustPO.Set(V.ODBC.con!rstCustPO.FieldValTrim!CUSTOMER_PO)
+F.Intrinsic.Control.Else
+	F.ODBC.con!rstCustPO.Close
+	F.Intrinsic.String.LPad(V.Global.sOrderNo,"0",7,V.Local.sQuery)
+	F.Intrinsic.String.Concat("SELECT CUSTOMER_PO FROM V_ORDER_HEADER WHERE ORDER_NO='",V.Local.sQuery,"'",V.Local.sQuery)
+	F.ODBC.Connection!con.OpenRecordsetRO("rstCustPO",V.Local.sQuery)
+	F.Intrinsic.Control.If(V.ODBC.con!rstCustPO.EOF,<>,True)
+		V.Global.sCustPO.Set(V.ODBC.con!rstCustPO.FieldValTrim!CUSTOMER_PO)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+F.ODBC.con!rstCustPO.Close
+
+F.Intrinsic.String.Concat("SELECT NAME_CUSTOMER FROM V_CUSTOMER_MASTER WHERE CUSTOMER='",V.Global.sCompNo,"'",V.Local.sQuery)
+F.ODBC.Connection!con.OpenRecordsetRO("rstCust",V.Local.sQuery)
+F.Intrinsic.Control.If(V.ODBC.con!rstCust.EOF,<>,True)
+	V.Global.sCustomer.Set(V.ODBC.con!rstCust.FieldValTrim!NAME_CUSTOMER)
+F.Intrinsic.Control.EndIf
+F.ODBC.con!rstCust.Close
+
+Function.Intrinsic.Control.ExitSub
+Function.Intrinsic.Control.Label("GetCustPO_Err")
+Function.Intrinsic.Control.If(Variable.Ambient.ErrorNumber,"<>",0)
+	Function.Intrinsic.String.Concat("Error Occurred ",Variable.Ambient.ErrorNumber," with description ",Variable.Ambient.ErrorDescription,Variable.Local.sError)
+Function.Intrinsic.Control.EndIf
+Program.Sub.GetCustInfo.End
+
+Program.Sub.PopulateDefaultEmails.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'add the default emails to the recipient list
+V.Local.sSQL.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sSQL.Set("select EMAIL from GCG_5227_Emails")
+F.ODBC.Connection!Con.ExecuteAndReturn(V.Local.sSQL, V.Local.sRet)
+F.Intrinsic.String.Split(V.Local.sRet, "#$#", V.Local.sRet)
+
+
+V.Local.iCounter.Declare()
+F.Intrinsic.Control.For(V.Local.iCounter, 0, V.Local.sRet.UBound, 1)
+	F.Intrinsic.Control.If(V.Global.sList.UBound,=,-1)
+		V.Global.sList.Redim(0,0)
+	F.Intrinsic.Control.Else
+		V.Global.sList.RedimPreserve(1)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.Replace(V.Local.sRet(V.Local.iCounter), "*!*", "", V.Local.sRet(V.Local.iCounter))
+	V.Global.sList(v.Global.sList.UBound).Set(V.Local.sRet(V.Local.iCounter))
+	
+F.Intrinsic.Control.Next(V.Local.iCounter)
+
+F.Intrinsic.Control.CallSub(FillList)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.PopulateDefaultEmails.End
+
+Program.Sub.ButtonEmailBrowser_Click.Start
+V.Local.sError.Declare(String)
+F.Intrinsic.Control.Try
+
+'make the email template browser
+V.Local.iWidths.Declare(Long)
+V.Local.iWidths.Redim(0, 1)
+V.Local.iWidths(0).Set(100)
+V.Local.iWidths(1).Set(200)
+V.Local.sColumns.Declare(String)
+V.Local.sColumns.Redim(0,1)
+V.Local.sColumns(0).Set("Subject")
+V.Local.sColumns(1).Set("Body")
+V.Local.sRet.Declare(String)
+F.Intrinsic.UI.Browser("Email Templates", "con", "select SUBJECT, BODY from GCG_5227_Templates", V.Local.sColumns, V.Local.iWidths, V.Local.sRet)
+
+'If nothing is selected, don't continue
+F.Intrinsic.Control.If(V.Local.sRet.Trim, =, "", "OR", V.Local.sRet.Trim, =, "***CANCEL***")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'replace the wildcards, and load the data
+'ORDER-NUM			0
+'CUST				1
+'CUSTOMER-PO		2
+'ORDER-DATE			3
+'DUE-DATE			4
+'BILL-TO-NAME		5
+'BILL-TO-ADRS1		6
+'BILL-TO-ADRS2		7
+'BILL-TO-CITY		8
+'BILL-TO-STATE		9
+'BILL-TO-ZIP		10
+'BILL-TO-COUNTRY	11
+'SHIP-TO-NAME		12
+'SHIP-TO-ADRS1		13
+'SHIP-TO-ADRS2		14
+'SHIP-TO-CITY		15
+'SHIP-TO-STATE		16
+'SHIP-TO-ZIP		17
+'SHIP-TO-COUNTRY	18
+F.Intrinsic.String.Split(V.Local.sRet, "*!*", V.Local.sRet)
+V.Local.iCounter.Declare(Long)
+F.Intrinsic.Control.For(V.Local.iCounter, 0, 19, 1)
+	F.Intrinsic.String.Replace(V.Local.sRet(0), V.Global.sWildCards(V.Local.iCounter), V.Global.sData(V.Local.iCounter), V.Local.sRet(0))
+	F.Intrinsic.String.Replace(V.Local.sRet(1), V.Global.sWildCards(V.Local.iCounter), V.Global.sData(V.Local.iCounter), V.Local.sRet(1))
+F.Intrinsic.Control.Next(V.Local.iCounter)
+
+GUI.F_ContactList.txtSubject.Text(V.Local.sRet(0).Trim)
+GUI.F_ContactList.mltxtBody.Text(V.Local.sRet(1).Trim)
+
+F.Intrinsic.Control.Catch
+    F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+    F.Intrinsic.UI.Msgbox(V.Local.sError)
+    F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ButtonEmailBrowser_Click.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$$}$12:00:00 AM$}$False
+Program.Sub.Comments.End
